@@ -1,6 +1,6 @@
 version: "3.9"
 services:
-  nest-api:
+  nestjs-taks-api:
     build: 
       context: .
       dockerfile: Dockerfile.dev
@@ -10,3 +10,31 @@ services:
     volumes:
       - /usr/app/node_modules
       - .:/usr/app/
+    networks: 
+      - nestjs-api-network
+
+  nestjs-taks-postgres:
+    image: postgres:13-alpine
+    ports:
+      - "5432:5432"
+    container_name: nestjs-task-management-postgres
+    environment: 
+      POSTGRES_DB: tasks
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+    networks: 
+      - nestjs-api-network
+       
+  nestjs-taks-pgadmin:
+    image: dpage/pgadmin4:4.29
+    ports:
+      - "8081:80"
+    environment: 
+      PGADMIN_DEFAULT_EMAIL: root@mail.com
+      PGADMIN_DEFAULT_PASSWORD: 12345
+    networks: 
+      - nestjs-api-network
+
+networks: 
+  nestjs-api-network:
+    driver: bridge
