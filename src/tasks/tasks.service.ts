@@ -31,17 +31,21 @@ export class TasksService {
     return this.tasksRepository.createTasks(createTaskDto, user);
   }
 
-  async deteteTasks(id: number): Promise<void> {
-    const result = await this.tasksRepository.delete(id);
+  async deteteTasks(id: number, user: User): Promise<void> {
+    const result = await this.tasksRepository.delete({ id, userId: user.id });
     if (result.affected === 0) {
       throw new NotFoundException(`Task with ID ${id} not found`);
     }
   }
 
-  // async updateTaskStatus(id: number, status: TaskStatus): Promise<Tasks> {
-  //   const tasks = await this.getTasksById(id);
-  //   tasks.status = status;
-  //   await tasks.save();
-  //   return tasks;
-  // }
+  async updateTaskStatus(
+    id: number,
+    status: TaskStatus,
+    user: User,
+  ): Promise<Tasks> {
+    const tasks = await this.getTasksById(id, user);
+    tasks.status = status;
+    await tasks.save();
+    return tasks;
+  }
 }
