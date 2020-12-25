@@ -13,6 +13,7 @@ const mockUser = {
 const mockTasksRepositoty = {
   getTasks: jest.fn(),
   findOne: jest.fn(),
+  createTasks: jest.fn(),
 };
 
 describe('TasksService', () => {
@@ -69,6 +70,23 @@ describe('TasksService', () => {
       expect(tasksService.getTasksById(1, mockUser)).rejects.toThrow(
         NotFoundException,
       );
+    });
+  });
+
+  describe('createTasks', () => {
+    it('call tasks repository create() ', async () => {
+      tasksRepository.createTasks.mockResolvedValue('test');
+      expect(tasksRepository.createTasks).not.toHaveBeenCalled();
+      const mockTasks = {
+        title: 'Test tasks',
+        description: 'test desc',
+      };
+      const result = await tasksService.createTasks(mockTasks, mockUser);
+      expect(tasksRepository.createTasks).toHaveBeenCalledWith(
+        mockTasks,
+        mockUser,
+      );
+      expect(result).toEqual('test');
     });
   });
 });
