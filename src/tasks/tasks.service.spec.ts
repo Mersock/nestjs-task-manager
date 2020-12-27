@@ -10,12 +10,12 @@ const mockUser = {
   username: 'Test User',
 };
 
-const mockTasksRepositoty = {
+const mockTasksRepositoty = () => ({
   getTasks: jest.fn(),
   findOne: jest.fn(),
   createTasks: jest.fn(),
   delete: jest.fn(),
-};
+});
 
 describe('TasksService', () => {
   let tasksService;
@@ -28,7 +28,7 @@ describe('TasksService', () => {
     const module = await Test.createTestingModule({
       providers: [
         TasksService,
-        { provide: TasksRepository, useValue: mockTasksRepositoty },
+        { provide: TasksRepository, useFactory: mockTasksRepositoty },
       ],
     }).compile();
 
