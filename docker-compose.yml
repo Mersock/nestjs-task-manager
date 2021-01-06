@@ -37,4 +37,5 @@ services:
 
 networks: 
   nestjs-api-network:
-    driver: bridge
+    name: nestjs-api-network
+    driver: bridge 
