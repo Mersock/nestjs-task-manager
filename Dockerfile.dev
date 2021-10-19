@@ -1,4 +1,6 @@
 FROM node:15.4.0-alpine
+#for Apple Silicon 
+#FROM --platform=linux/amd64 node:15.4.0-alpine
 
 WORKDIR /usr/app
 
